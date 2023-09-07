@@ -1,20 +1,18 @@
 from .models import User
-from .serializers import UserSerializer, UserLoginSerializer
+from .serializers import UserSerializer, UserLoginSerializer, UserCreateSerializer
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 
 from django.contrib.auth import login, logout
 
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
 
 # Create your views here.
 
 
 class CreateUser(generics.CreateAPIView):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = UserCreateSerializer
     permission_classes = [AllowAny]
 
     def perform_create(self, serializer):
