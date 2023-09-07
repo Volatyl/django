@@ -13,12 +13,10 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         password = validated_data.pop("password")
-        if not password:
-            raise ValidationError
-
-        user = User.objects.create(**validated_data)
-        user.set_password(password)
-        user.save()
+        email = validated_data.pop("email")
+        user = User.objects.create_user(
+            email=email, password=password, **validated_data
+        )
         return user
 
 
