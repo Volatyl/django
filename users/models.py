@@ -1,5 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    PermissionsMixin,
+    BaseUserManager,
+)
 
 # Create your models here.
 
@@ -14,10 +18,7 @@ class CustomUserManager(BaseUserManager):
         email = self.normalize_email(email)
 
         user = self.model(
-            email=email,
-            first_name=first_name,
-            last_name=last_name,
-            **extra_fields
+            email=email, first_name=first_name, last_name=last_name, **extra_fields
         )
         user.set_password(password)
         print({"password before": password})
@@ -26,19 +27,19 @@ class CustomUserManager(BaseUserManager):
         return user
 
     def create_user(self, email, password, first_name, last_name, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_active', True)
-        extra_fields.setdefault('is_superuser', False)
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_active", True)
+        extra_fields.setdefault("is_superuser", False)
         return self._create_user(email, password, first_name, last_name, **extra_fields)
 
     def create_superuser(self, email, password, first_name, last_name, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_active', True)
-        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_active", True)
+        extra_fields.setdefault("is_superuser", True)
         return self._create_user(email, password, first_name, last_name, **extra_fields)
 
 
-class User(AbstractBaseUser, PermissionsMixin):
+class User(AbstractBaseUser):
     email = models.EmailField(db_index=True, unique=True, max_length=255)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
@@ -48,10 +49,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ['first_name', 'last_name']
+    REQUIRED_FIELDS = ["first_name", "last_name"]
 
     objects = CustomUserManager()
 
     class Meta:
-        verbose_name = 'User'
-        verbose_name_plural = 'Users'
+        verbose_name = "User"
+        verbose_name_plural = "Users"

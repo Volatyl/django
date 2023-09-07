@@ -17,8 +17,8 @@ class CreateUser(generics.CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
 
-    def perform_create(self, serializer):
-        serializer.save(is_staff=False, is_superuser=False)
+    # def perform_create(self, serializer):
+    #     serializer.save(is_staff=False, is_superuser=False)
 
 
 class CreateStaff(generics.CreateAPIView):
@@ -45,6 +45,6 @@ class UserLogin(generics.CreateAPIView):
         data = request.data.copy()
         serializer = UserLoginSerializer(data=data)
         if serializer.is_valid(raise_exception=True):
-            user = serializer.validated_data['user']
+            user = serializer.validated_data["user"]
             login(request, user)
             return Response(serializer.data, status=status.HTTP_200_OK)
