@@ -6,8 +6,6 @@ from rest_framework.response import Response
 
 from django.contrib.auth import login, logout
 
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
 
 # Create your views here.
 
