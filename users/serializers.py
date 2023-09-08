@@ -1,7 +1,7 @@
 from rest_framework import serializers
+from django.contrib.auth import get_user_model
 from rest_framework.exceptions import ValidationError
-from django.contrib.auth import get_user_model, authenticate
-from django.contrib.auth.hashers import check_password
+from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
@@ -25,18 +25,21 @@ class UserLoginSerializer(serializers.Serializer):
     password = serializers.CharField()
 
     def validate(self, data):
-        email = data.get("email")
-        password = data.get("password")
-        try:
-            user = User.objects.get(email=email)
-        except User.DoesNotExist:
-            raise ValidationError("This email does not exist.")
+      
+        email = data.get('email')
+        password = data.get('password')
 
-        if not check_password(password, user.password):
-            raise ValidationError("Incorrect password.")
+        user = User.objects.filter(email=email).first()
+        
+        if user is None:
+                raise ValidationError('This email does not exist.')
+            
+        if not user.check_password(password):
+            raise ValidationError('Wrong password')
 
         if not user.is_active:
             raise ValidationError("This user account is not active.")
 
         data["user"] = user
+        
         return data
