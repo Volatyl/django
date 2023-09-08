@@ -30,4 +30,6 @@ class UserLoginSerializer(serializers.Serializer):
         if not user.is_active:
             raise ValidationError('This user account is not active.')
 
+        data["user"] = user
+
         return data
