@@ -1,5 +1,5 @@
 from .models import User
-from .serializers import UserSerializer, UserLoginSerializer, UserCreateSerializer
+from .serializers import UserSerializer, UserLoginSerializer
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
@@ -12,7 +12,7 @@ from django.contrib.auth import login, logout
 
 class CreateUser(generics.CreateAPIView):
     queryset = User.objects.all()
-    serializer_class = UserCreateSerializer
+    serializer_class = UserSerializer
     permission_classes = [AllowAny]
 
     def perform_create(self, serializer):
